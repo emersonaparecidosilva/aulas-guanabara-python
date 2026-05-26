@@ -1,6 +1,8 @@
 import os
 import subprocess
 
+#Teste Automação
+
 def list_directory(path):
     """List all files and directories in the given path."""
     try:
