@@ -3,7 +3,7 @@
 from random import randint
 
 print(('\033[30m==*==')*20)
-print('Bem vindo(a) ao ogo de adivinhação v2.0')
+print('Bem vindo(a) ao Jogo de adivinhação v2.0')
 print(('==*==')*20)
 
 print('\nAcabei de pensar em um número entre 0 e 10')

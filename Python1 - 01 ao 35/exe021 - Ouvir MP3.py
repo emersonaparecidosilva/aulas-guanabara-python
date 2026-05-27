@@ -4,9 +4,16 @@ print(('==*==')*20)
 print('Bem vindo(a) - Ouvir MP3')
 print(('==*==')*20)
 
+# Para ouvir um arquivo mp3, é necessário instalar a biblioteca pygame. Rode antes de executar o script: pip install pygame
+import os
 import pygame
+
 pygame.init()
-pygame.mixer.music.load('teste.mp3')
+
+# Salve o arquivo mp3 na pasta raiz do projeto.
+caminho_musica = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'musica.mp3'))
+
+pygame.mixer.music.load(caminho_musica)
 pygame.mixer.music.play()
 input()
 pygame.event.wait()

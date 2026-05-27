@@ -9,7 +9,7 @@ frase = input("Digite uma frase: ").strip().lower()
 fraseSeparada = frase.split()
 juntar = ''.join(fraseSeparada)
 inverso = juntar[::-1]
-if frase == inverso:
+if juntar == inverso:
     print(f"{frase} é um palíndromo")
 else:
     print(f"{frase} não é um palíndromo")

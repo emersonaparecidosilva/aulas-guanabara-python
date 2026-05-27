@@ -2,7 +2,7 @@
 from time import sleep
 
 print(('==*==')*20)
-print('Bem vindo(a) - Tratando vários valores v1.0')
+print('Bem vindo(a) - Tratando vários valores v2.0')
 print(('==*==')*20)
 
 soma = 0

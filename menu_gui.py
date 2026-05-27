@@ -12,6 +12,7 @@ class MenuGUI:
         # Começa no diretório atual
         self.current_directory = os.getcwd()
         self.base_directory = self.current_directory  # Define a raiz do projeto
+        self.is_searching = False # Flag para controlar o modo de busca
         
         # Componente de texto para mostrar o caminho atual
         self.lbl_path = tk.Label(root, text=self.current_directory, fg="blue", wraplength=580, font=("Arial", 10, "italic"))
@@ -80,39 +81,53 @@ class MenuGUI:
             self.go_back()
 
     def filter_items(self, *args):
-        """Filtra a exibição do Listbox baseando-se no que foi digitado na barra de busca."""
+        """Filtra a exibição do Listbox. Se houver busca, procura recursivamente."""
         self.listbox.delete(0, tk.END)
         self.items = []
         query = self.search_var.get().lower()
         
-        for item in getattr(self, 'all_current_items', []):
-            if query in item.lower(): # Verifica se o texto digitado faz parte do nome do arquivo
-                self.items.append(item)
-                full_path = os.path.join(self.current_directory, item)
+        if not query:
+            self.is_searching = False
+            # Se a busca está vazia, mostra o conteúdo do diretório atual
+            for item_name in getattr(self, 'all_current_items', []):
+                self.items.append(item_name) # Armazena o nome simples
+                full_path = os.path.join(self.current_directory, item_name)
                 if os.path.isdir(full_path):
-                    self.listbox.insert(tk.END, f"📁 {item}")
-                elif item.endswith(".py"):
-                    self.listbox.insert(tk.END, f"🐍 {item}")
-                else:
-                    self.listbox.insert(tk.END, f"📄 {item}")
+                    self.listbox.insert(tk.END, f"📁 {item_name}")
+                elif item_name.endswith(".py"):
+                    self.listbox.insert(tk.END, f"🐍 {item_name}")
+        else:
+            self.is_searching = True
+            # Se há uma busca, procura recursivamente a partir do diretório atual
+            for root, dirs, files in os.walk(self.current_directory):
+                dirs[:] = [d for d in dirs if not d.startswith('.')] # Ignora pastas ocultas
+                for name in files + dirs:
+                    if query in name.lower() and (name.endswith(".py") or os.path.isdir(os.path.join(root, name))):
+                        full_path = os.path.join(root, name)
+                        self.items.append(full_path) # Armazena o caminho completo
+                        display_path = os.path.relpath(full_path, self.current_directory)
+                        if os.path.isdir(full_path):
+                            self.listbox.insert(tk.END, f"📁 {display_path}")
+                        elif name.endswith(".py"):
+                            self.listbox.insert(tk.END, f"🐍 {display_path}")
 
     def on_double_click(self, event):
         """Ação acionada ao dar dois cliques em um item da lista."""
         selection = self.listbox.curselection()
         if not selection:
             return
-            
+
         index = selection[0]
         selected_item = self.items[index]
-        full_path = os.path.join(self.current_directory, selected_item)
+        
+        # Se estiver em modo de busca, o item é o caminho completo. Senão, montamos o caminho.
+        full_path = selected_item if self.is_searching else os.path.join(self.current_directory, selected_item)
         
         if os.path.isdir(full_path):
             self.current_directory = full_path
             self.load_directory()
         elif full_path.endswith(".py"):
             self.run_program(full_path)
-        else:
-            messagebox.showinfo("Aviso", "Por favor, selecione uma pasta ou um arquivo Python (.py).")
 
     def go_back(self):
         """Sobe um nível na árvore de diretórios."""
