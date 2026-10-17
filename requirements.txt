@@ -1,0 +1,6 @@
+streamlit>=1.40
+ 
+# Descomente apenas o que algum exercício realmente importar:
+# emoji
+# pygame
+ 
