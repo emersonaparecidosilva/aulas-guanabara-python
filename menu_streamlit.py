@@ -20,7 +20,7 @@ from pathlib import Path
 import streamlit as st
 
 ROOT = Path(__file__).resolve().parent
-IGNORAR = {".git", ".venv", "venv", "__pycache__", ".github", ".streamlit", ".idea", ".vscode"}
+IGNORAR = {".git", ".venv", "venv", "__pycache__", ".github", ".streamlit", ".idea", ".vscode", "modulos"}
 ARQUIVOS_IGNORADOS = {"menu.py", "menu_gui.py", "menu_streamlit.py", "streamlit_app.py"}
 TIMEOUT_SEGUNDOS = 15
 CODIGO_AGUARDANDO = 87
