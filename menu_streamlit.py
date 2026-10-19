@@ -173,7 +173,9 @@ def enviar_resposta(rel: str):
 
 
 # ---------- interface ----------
-st.title("🐍 Navegador de Exercícios - Curso de Python")
+st.title("🐍 Curso de Python do Professor Guanabara")
+st.success("Todos os exercícios propostos funcionais com código e saída")
+
 
 pasta_atual = caminho_seguro(st.session_state.pasta)
 rel_atual = "" if pasta_atual == ROOT else str(pasta_atual.relative_to(ROOT))
@@ -188,7 +190,9 @@ with col_nav:
         rel_pai = "" if pai == ROOT else str(pai.relative_to(ROOT))
         st.button("⬅️ Voltar", on_click=ir_para, args=(rel_pai,), use_container_width=True)
 
-    busca = st.text_input("🔍 Buscar em todas as pastas", placeholder="ex: 035 ou tupla").strip()
+    st.info("Busque ou Escolha um exercício na lista de pastas/arquivos abaixo para ver o código e executá-lo.")
+
+    busca = st.text_input("🔍 Buscar em todas as pastas", placeholder="ex: 035, soma, tabuada ou tupla").strip()
 
     if busca:
         # busca global: percorre todas as subpastas
@@ -236,7 +240,7 @@ with col_nav:
 with col_main:
     rel_arquivo = st.session_state.arquivo
     if not rel_arquivo:
-        st.info("Escolha um exercício na lista ao lado para ver o código e executá-lo.")
+        print("")
     else:
         arquivo = caminho_seguro(rel_arquivo)
         if not arquivo.is_file():
@@ -284,4 +288,28 @@ with col_main:
                         elif retorno != -1:
                             st.warning(f"Programa terminou com erro (código {retorno}).")
 
+st.write("")
+st.success("Curso disponível gratuitamente no Youtube")
+
+videos = [
+    "https://www.youtube.com/watch?v=S9uPNppGsGo&list=PLHz_AreHm4dlKP6QQCekuIPky1CiwmdI6",
+    "https://www.youtube.com/watch?v=nJkVHusJp6E&list=PLHz_AreHm4dk_nZHmxxf_J0WRAqy5Czye",
+    "https://www.youtube.com/watch?v=0LB3FSfjvao&list=PLHz_AreHm4dksnH2jVTIVNviIMBVYyFnH"
+]
+
+# 2. Criação de 3 colunas na mesma linha
+col1, col2, col3 = st.columns(3)
+
+# 3. Distribuição dos vídeos em cada coluna com títulos individuais
+with col1:
+    st.subheader("Módulo 1")
+    st.video(videos[0])
+
+with col2:
+    st.subheader("Módulo 2")
+    st.video(videos[1])
+
+with col3:
+    st.subheader("Módulo 3")
+    st.video(videos[2])
                 
